@@ -20,7 +20,8 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
 
         <TextBlock x:Name="ScoreText"
                    HorizontalAlignment="Center"
@@ -29,7 +30,15 @@
                    FontSize="22"
                    Margin="10"/>
 
-        <Border x:Name="GridBorder"
+            <TextBlock x:Name="HighScoreText"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Text="High Score 0"
+                   FontSize="22"
+                   Margin="10"
+                   Grid.Row="2"/>
+        
+            <Border x:Name="GridBorder"
                 Grid.Row="1"
                 BorderBrush="{StaticResource GridLineColor}"
                 BorderThickness="1.5"

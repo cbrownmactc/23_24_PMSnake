@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,6 +42,7 @@ namespace PMSnake
         private readonly Image[,] gridImages;
         private GameState gameState;
         private bool gameRunning;
+        private int highScore = 0;
 
 
         public MainWindow()
@@ -49,6 +51,7 @@ namespace PMSnake
 
             gridImages = SetupGrid();
             gameState = new GameState(rows, cols);
+            LoadHighScore();
         }
         
         private async Task GameLoop()
@@ -166,10 +169,43 @@ namespace PMSnake
 
         private async Task ShowGameOver()
         {
+            if (gameState.Score > highScore)
+            {
+                highScore = gameState.Score;
+                SaveHighScore();
+            }
+
+            HighScoreText.Text = $"High Score: {highScore}";
+
             await DrawDeadSnake();
             await Task.Delay(1000);
             OverlayText.Text = "Press Any Key To Start";
             Overlay.Visibility = Visibility.Visible;
+        }
+
+        private void LoadHighScore()
+        {
+            string fileName = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "highscore.txt");
+
+            if (File.Exists(fileName))
+            {
+                StreamReader sr = new StreamReader(fileName);
+                highScore = int.Parse(sr.ReadLine());
+                sr.Close();
+                HighScoreText.Text = $"High Score: {highScore}";
+            }
+            else
+            {
+                StreamWriter sw = new StreamWriter(fileName);
+                sw.WriteLine(highScore);
+                sw.Close();
+            }
+        }
+        private void SaveHighScore()
+        {
+            StreamWriter sw = new StreamWriter(Directory.GetCurrentDirectory() + "\\highscore.txt");
+            sw.WriteLine(highScore);
+            sw.Close();
         }
 
         private void DrawSnakeHead()
