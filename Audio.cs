@@ -31,6 +31,7 @@ namespace PMSnake
         private static void Player_MediaEnded(object sender, EventArgs e)
         {
             MediaPlayer m = sender as MediaPlayer;
+            m.Stop();
             m.Position = new TimeSpan(0);
         }
 
