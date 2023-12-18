@@ -169,6 +169,8 @@ namespace PMSnake
 
         private async Task ShowGameOver()
         {
+            Audio.GameOver.Play();
+
             if (gameState.Score > highScore)
             {
                 highScore = gameState.Score;
