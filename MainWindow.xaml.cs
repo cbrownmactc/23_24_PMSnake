@@ -13,6 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
+
 
 namespace PMSnake
 {
@@ -43,6 +45,7 @@ namespace PMSnake
         private GameState gameState;
         private bool gameRunning;
         private int highScore = 0;
+        private Random random = new Random();
 
 
         public MainWindow()
@@ -234,6 +237,25 @@ namespace PMSnake
                 await Task.Delay(50);
 
             }
+        }
+
+        private async Task ShakeWindow(int durationMs)
+        {
+            var oLeft = this.Left;
+            var oTop = this.Top;
+
+            var shakeTimer = new DispatcherTimer();
+            shakeTimer.Tick += (sender, args) =>
+            {
+                this.Left = oLeft + random.Next(-10, 11);
+                this.Top = oTop + random.Next(-10, 11);
+            };
+
+            shakeTimer.Interval = TimeSpan.FromMilliseconds(200);
+            shakeTimer.Start();
+
+            await Task.Delay(durationMs);
+            shakeTimer.Stop();
         }
     }
 }
