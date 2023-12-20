@@ -28,7 +28,8 @@ namespace PMSnake
             {
                 { GridValue.Empty, Images.Empty },
                 { GridValue.Snake, Images. Body },
-                { GridValue.Food, Images.Food }
+                { GridValue.Food, Images.Food },
+                { GridValue.Wall, Images.Wall }
             };
 
         private readonly Dictionary<Direction, int> dirToRotation = new()
@@ -46,7 +47,7 @@ namespace PMSnake
         private bool gameRunning;
         private int highScore = 0;
         private Random random = new Random();
-
+        private int boostSpeed = 0;
 
         public MainWindow()
         {
@@ -61,7 +62,7 @@ namespace PMSnake
         {
             while (!gameState.GameOver)
             {
-                await Task.Delay(100);
+                await Task.Delay(100-boostSpeed);
                 gameState.Move();
                 Draw();
             }
@@ -138,6 +139,18 @@ namespace PMSnake
                 case Key.Down:
                     gameState.ChangeDirection(Direction.Down);
                     break;
+                case Key.Space:
+                    //boostSpeed = (boostSpeed == 0) ? 50 : 0;
+                    if (boostSpeed == 0)
+                    {
+                        boostSpeed = GameSettings.BoostSpeed;
+                    }
+                    else
+                    {
+                        boostSpeed = 0;
+                    }
+
+                    break;
             }
         }
 
@@ -172,6 +185,7 @@ namespace PMSnake
 
         private async Task ShowGameOver()
         {
+            ShakeWindow(2000);
             Audio.GameOver.Play();
 
             if (gameState.Score > highScore)
@@ -234,7 +248,7 @@ namespace PMSnake
                 ImageSource source =
                     (i == 0) ? Images.DeadHead : Images.DeadBody;
                 gridImages[pos.Row, pos.Col].Source = source;
-                await Task.Delay(50);
+                await Task.Delay(Math.Max(50-(i*3),1));
 
             }
         }
@@ -244,7 +258,7 @@ namespace PMSnake
             var oLeft = this.Left;
             var oTop = this.Top;
 
-            var shakeTimer = new DispatcherTimer();
+            var shakeTimer = new DispatcherTimer(DispatcherPriority.Send);
             shakeTimer.Tick += (sender, args) =>
             {
                 this.Left = oLeft + random.Next(-10, 11);

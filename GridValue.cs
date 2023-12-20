@@ -7,6 +7,7 @@ namespace PMSnake
         Empty,
         Snake,
         Food,
+        Wall,
         Outside
     }
 }

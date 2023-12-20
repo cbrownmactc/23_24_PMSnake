@@ -17,6 +17,7 @@
     <None Remove="Assets\game-over.wav" />
     <None Remove="Assets\Head.png" />
     <None Remove="Assets\icon.ico" />
+    <None Remove="Assets\wall.jpg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,6 +35,7 @@
     <Resource Include="Assets\Food.png" />
     <Resource Include="Assets\Head.png" />
     <Resource Include="Assets\icon.ico" />
+    <Resource Include="Assets\wall.jpg" />
   </ItemGroup>
 
 </Project>
