@@ -20,7 +20,7 @@ namespace PMSnake
                 player.MediaEnded += PlayerRepeat_MediaEnded;
             }
 
-            if (autoReset)
+            if (autoReset && !repeat)
             {
                 player.MediaEnded += Player_MediaEnded;
             }
